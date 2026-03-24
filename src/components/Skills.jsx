@@ -227,7 +227,7 @@ export default function Skills() {
           ))}
         </motion.div>
       </div>
-      <SectionArrow to="#gallery" label="Gallery" />
+      <SectionArrow to="#projects" />
     </section>
   )
 }

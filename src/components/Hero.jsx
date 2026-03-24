@@ -9,6 +9,14 @@ const ROLES = [
   '在探索世界的学生',
 ]
 
+const CODE_LINES = [
+  '>>> import torch, cv2  # AI Vision',
+  '$ python train.py --model yolov8',
+  'chain = LangGraph().compile()',
+  'from aming import build_future',
+  '$ uv run detect.py --img demo.jpg',
+]
+
 function NeuralCanvas() {
   const canvasRef = useRef(null)
 
@@ -168,6 +176,47 @@ function TypeWriter({ texts }) {
   )
 }
 
+function CodeTypeWriter({ texts }) {
+  const [index, setIndex] = useState(0)
+  const [display, setDisplay] = useState('')
+  const [charIdx, setCharIdx] = useState(0)
+  const [phase, setPhase] = useState('typing') // typing | waiting | deleting
+
+  useEffect(() => {
+    const current = texts[index]
+    let timeout
+    if (phase === 'typing') {
+      if (charIdx <= current.length) {
+        timeout = setTimeout(() => {
+          setDisplay(current.slice(0, charIdx))
+          setCharIdx(c => c + 1)
+        }, 55)
+      } else {
+        timeout = setTimeout(() => setPhase('deleting'), 2200)
+      }
+    } else {
+      if (charIdx >= 0) {
+        timeout = setTimeout(() => {
+          setDisplay(current.slice(0, charIdx))
+          setCharIdx(c => c - 1)
+        }, 30)
+      } else {
+        setPhase('typing')
+        setIndex(i => (i + 1) % texts.length)
+        setCharIdx(0)
+      }
+    }
+    return () => clearTimeout(timeout)
+  }, [charIdx, phase, index, texts])
+
+  return (
+    <span>
+      <span style={{ color: '#10b981', marginRight: 0 }}>{display}</span>
+      <span style={{ borderRight: '2px solid #10b981', marginLeft: 1, animation: 'blink 1s step-end infinite' }} />
+    </span>
+  )
+}
+
 export default function Hero() {
   return (
     <section
@@ -215,6 +264,26 @@ export default function Hero() {
           style={{ fontSize: 'clamp(1.2rem, 3vw, 1.8rem)', minHeight: '2.4em', marginBottom: 40 }}
         >
           <TypeWriter texts={ROLES} />
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.9 }}
+          style={{
+            fontFamily: "'JetBrains Mono', 'Fira Code', 'Courier New', monospace",
+            fontSize: 'clamp(0.75rem, 2vw, 1rem)',
+            background: 'rgba(0,0,0,0.35)',
+            border: '1px solid rgba(16,185,129,0.3)',
+            borderRadius: 8,
+            padding: '10px 20px',
+            marginBottom: 36,
+            display: 'inline-block',
+            backdropFilter: 'blur(8px)',
+            letterSpacing: '0.03em',
+          }}
+        >
+          <CodeTypeWriter texts={CODE_LINES} />
         </motion.div>
 
         <motion.div
@@ -278,6 +347,8 @@ export default function Hero() {
 
       {/* Scroll arrow */}
       <div
+        data-cursor
+        onClick={() => document.querySelector('#about')?.scrollIntoView({ behavior: 'smooth' })}
         style={{
           position: 'absolute',
           bottom: 32,
@@ -285,8 +356,19 @@ export default function Hero() {
           transform: 'translateX(-50%)',
           zIndex: 1,
           animation: 'float 2s ease-in-out infinite',
-          opacity: 0.6,
+          opacity: 0.7,
+          cursor: 'none',
+          padding: 8,
+          borderRadius: '50%',
+          background: 'rgba(168,85,247,0.1)',
+          border: '1px solid rgba(168,85,247,0.3)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          transition: 'background 0.2s, opacity 0.2s',
         }}
+        onMouseEnter={e => { e.currentTarget.style.background = 'rgba(168,85,247,0.25)'; e.currentTarget.style.opacity = '1' }}
+        onMouseLeave={e => { e.currentTarget.style.background = 'rgba(168,85,247,0.1)'; e.currentTarget.style.opacity = '0.7' }}
       >
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#a855f7" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
           <polyline points="6 9 12 15 18 9" />

@@ -153,7 +153,7 @@ export default function About() {
           </motion.div>
         </div>
       </div>
-      <SectionArrow to="#skills" label="Skills" />
+      <SectionArrow to="#skills" />
     </section>
   )
 }

@@ -208,7 +208,7 @@ export default function Gallery() {
         </div>
       </div>
 
-      <SectionArrow to="#contact" label="Contact" />
+      <SectionArrow to="#contact" />
     </section>
   )
 }
