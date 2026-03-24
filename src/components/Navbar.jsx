@@ -61,15 +61,33 @@ export default function Navbar() {
         alignItems: 'center',
         justifyContent: 'space-between',
       }}>
-        {/* Logo */}
+        {/* Logo - avatar */}
         <a
           href="#home"
           data-cursor
-          style={{ textDecoration: 'none' }}
+          style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 10 }}
         >
-          <span className="grad-text" style={{ fontWeight: 900, fontSize: '1.4rem', letterSpacing: 1 }}>
-            Aming
-          </span>
+          <div style={{
+            width: 38,
+            height: 38,
+            borderRadius: '50%',
+            overflow: 'hidden',
+            border: '2px solid transparent',
+            background: 'linear-gradient(white, white) padding-box, linear-gradient(135deg, #a855f7, #06b6d4) border-box',
+            flexShrink: 0,
+            transition: 'transform 0.25s ease, box-shadow 0.25s ease',
+          }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'scale(1.08)'
+              e.currentTarget.style.boxShadow = '0 4px 16px rgba(168,85,247,0.4)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'scale(1)'
+              e.currentTarget.style.boxShadow = 'none'
+            }}
+          >
+            <img src="/avatar.jpg" alt="Aming" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          </div>
         </a>
 
         {/* Desktop nav */}

@@ -4,7 +4,7 @@ import { motion, useInView } from 'framer-motion'
 const SKILLS = [
   {
     category: 'AI · 视觉',
-    icon: '👁️',
+    icon: '🤖',
     gradient: 'linear-gradient(135deg, #a855f7, #6366f1)',
     items: [
       { name: 'PyTorch', desc: '深度学习框架，训练视觉模型' },
@@ -24,17 +24,6 @@ const SKILLS = [
       { name: '爬虫', desc: 'Scrapy / httpx 数据采集' },
       { name: 'AI 音频', desc: 'Whisper / TTS 语音处理' },
       { name: 'FastAPI', desc: 'Python 后端 API 服务' },
-    ],
-  },
-  {
-    category: '其他语言',
-    icon: '⌨️',
-    gradient: 'linear-gradient(135deg, #06b6d4, #10b981)',
-    items: [
-      { name: 'C / C++', desc: '性能关键与底层场景' },
-      { name: 'SQL', desc: '数据查询与管理' },
-      { name: 'Go', desc: '高并发服务开发' },
-      { name: 'YAML', desc: '配置文件与工作流编排' },
     ],
   },
   {

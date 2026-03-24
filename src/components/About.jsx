@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
 
 const fadeUp = {
@@ -17,14 +17,16 @@ const fadeRight = {
 }
 
 const INFO_CARDS = [
-  { label: '方向', value: 'AI · 视觉 · Python' },
-  { label: '状态', value: '在读学生' },
-  { label: '爱好', value: '羽毛球 · 乒乓球' },
+  { label: 'AI', value: '算法工程师方向', icon: '🤖' },
+  { label: '视觉', value: '图像识别 · 目标检测', icon: '👁️' },
+  { label: 'Python', value: '主力开发语言', icon: '🐍' },
+  { label: '状态', value: '在读学生', icon: '🎓' },
 ]
 
 export default function About() {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-100px' })
+  const [avatarHover, setAvatarHover] = useState(false)
 
   return (
     <section id="about" className="section">
@@ -46,7 +48,12 @@ export default function About() {
             animate={inView ? 'visible' : 'hidden'}
             style={{ display: 'flex', justifyContent: 'center' }}
           >
-            <div style={{ position: 'relative', width: 240, height: 240 }}>
+            <div
+              style={{ position: 'relative', width: 240, height: 240 }}
+              onMouseEnter={() => setAvatarHover(true)}
+              onMouseLeave={() => setAvatarHover(false)}
+            >
+              {/* Outer rotating ring */}
               <div style={{
                 position: 'absolute',
                 inset: -4,
@@ -64,6 +71,7 @@ export default function About() {
                 opacity: 0.5,
                 zIndex: 0,
               }} />
+              {/* Avatar image with hover scale */}
               <div style={{
                 position: 'relative',
                 width: '100%',
@@ -73,12 +81,17 @@ export default function About() {
                 zIndex: 1,
                 border: '4px solid white',
                 background: 'linear-gradient(135deg, #e0d7ff, #c7d9ff)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '5rem',
+                transform: avatarHover ? 'scale(1.07)' : 'scale(1)',
+                transition: 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                boxShadow: avatarHover
+                  ? '0 20px 50px rgba(168,85,247,0.4)'
+                  : '0 8px 24px rgba(168,85,247,0.15)',
               }}>
-                <img src="/avatar.jpg" alt="Aming" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <img
+                  src="/avatar.jpg"
+                  alt="Aming"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
               </div>
               <style>{`
                 @keyframes spin-ring {
@@ -98,27 +111,28 @@ export default function About() {
             <p style={{ fontSize: '1.1rem', lineHeight: 1.9, color: '#374151', marginBottom: 24 }}>
               你好！我是 <strong className="grad-text" style={{ fontStyle: 'normal' }}>Aming</strong>，
               一名专注于 <strong>AI 视觉</strong> 方向的学生。Python 是我的主力语言，
-              我喜欢它简洁优雅的语法，也喜欢用它做各种有趣的事——从视觉模型到自动化脚本。
+              我喜欢它简洁优雅的语法，用它构建从视觉模型到自动化脚本的各类应用。
             </p>
             <p style={{ fontSize: '1.1rem', lineHeight: 1.9, color: '#374151', marginBottom: 32 }}>
-              目前在深入 AI 算法工程师方向，研究 LangChain、LangGraph 以及模型优化技术。
-              课余时间喜欢打羽毛球和乒乓球，运动让我保持清醒的头脑。
+              目前深入 AI 算法工程师方向，研究 LangChain、LangGraph 以及模型优化技术，
+              致力于将视觉 AI 与 LLM 能力结合，探索更智能的系统架构。
             </p>
 
-            <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
               {INFO_CARDS.map((item, i) => (
                 <motion.div
                   key={item.label}
                   initial={{ opacity: 0, y: 20, scale: 0.9 }}
                   animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
-                  transition={{ duration: 0.5, delay: 0.5 + i * 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
+                  transition={{ duration: 0.5, delay: 0.5 + i * 0.08, ease: [0.25, 0.46, 0.45, 0.94] }}
                   className="glass-card"
-                  style={{ padding: '12px 20px', textAlign: 'center' }}
+                  style={{ padding: '14px 10px', textAlign: 'center' }}
                 >
-                  <div style={{ fontSize: '0.75rem', color: '#9ca3af', marginBottom: 4, textTransform: 'uppercase', letterSpacing: 1 }}>
+                  <div style={{ fontSize: '1.4rem', marginBottom: 6 }}>{item.icon}</div>
+                  <div style={{ fontSize: '0.7rem', color: '#9ca3af', marginBottom: 4, textTransform: 'uppercase', letterSpacing: 1 }}>
                     {item.label}
                   </div>
-                  <div style={{ fontWeight: 700, color: '#4b5563' }}>{item.value}</div>
+                  <div style={{ fontWeight: 700, color: '#4b5563', fontSize: '0.82rem', lineHeight: 1.4 }}>{item.value}</div>
                 </motion.div>
               ))}
             </div>
