@@ -7,7 +7,6 @@ import Skills from './components/Skills'
 import Projects from './components/Projects'
 import Gallery from './components/Gallery'
 import Contact from './components/Contact'
-import FloatingPlayer from './components/FloatingPlayer'
 
 function Aurora() {
   return (
@@ -35,7 +34,6 @@ export default function App() {
         <Gallery />
         <Contact />
       </main>
-      <FloatingPlayer />
     </>
   )
 }
