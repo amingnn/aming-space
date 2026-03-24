@@ -102,8 +102,45 @@ export default function Contact() {
   const inView = useInView(ref, { once: true, margin: '-80px' })
 
   return (
-    <section id="contact" className="section">
-      <div className="container" ref={ref} style={{ maxWidth: 700 }}>
+    <section id="contact" className="section" style={{ position: 'relative', overflow: 'hidden' }}>
+      {/* Background decorations */}
+      <div style={{
+        position: 'absolute', top: '50%', left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 700, height: 700, borderRadius: '50%',
+        background: 'radial-gradient(circle, rgba(168,85,247,0.05) 0%, transparent 65%)',
+        pointerEvents: 'none',
+      }} />
+      <div style={{
+        position: 'absolute', top: -60, right: -80,
+        width: 350, height: 350, borderRadius: '50%',
+        background: 'radial-gradient(circle, rgba(236,72,153,0.06) 0%, transparent 70%)',
+        pointerEvents: 'none',
+      }} />
+      <div style={{
+        position: 'absolute', bottom: -40, left: -60,
+        width: 280, height: 280, borderRadius: '50%',
+        background: 'radial-gradient(circle, rgba(6,182,212,0.06) 0%, transparent 70%)',
+        pointerEvents: 'none',
+      }} />
+      {/* Sparkle dots */}
+      {[...Array(6)].map((_, i) => (
+        <motion.div
+          key={i}
+          animate={{ opacity: [0.2, 0.7, 0.2], scale: [1, 1.4, 1] }}
+          transition={{ duration: 3 + i * 0.7, repeat: Infinity, delay: i * 0.5 }}
+          style={{
+            position: 'absolute',
+            width: 6, height: 6,
+            borderRadius: '50%',
+            background: ['#a855f7','#3b82f6','#06b6d4','#ec4899','#10b981','#f59e0b'][i],
+            top: `${[15, 70, 30, 80, 20, 65][i]}%`,
+            left: `${[5, 8, 90, 92, 50, 50][i]}%`,
+            pointerEvents: 'none',
+          }}
+        />
+      ))}
+      <div className="container" ref={ref} style={{ maxWidth: 700, position: 'relative', zIndex: 1 }}>
         <motion.h2
           className="section-title grad-text"
           initial={{ opacity: 0, y: 30 }}

@@ -1,5 +1,7 @@
 import { useRef, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
+import SectionArrow from './SectionArrow'
+import PythonIcon from './PythonIcon'
 
 const SKILLS = [
   {
@@ -16,7 +18,7 @@ const SKILLS = [
   },
   {
     category: 'Python 生态',
-    icon: '🐍',
+    icon: '__python__',
     gradient: 'linear-gradient(135deg, #3b82f6, #06b6d4)',
     items: [
       { name: '自动化', desc: 'Playwright / Selenium 等' },
@@ -58,12 +60,13 @@ const containerVariants = {
 }
 
 const cardVariants = {
-  hidden: { opacity: 0, y: 60, scale: 0.94 },
+  hidden: { opacity: 0, y: 60, scale: 0.92, rotateX: 8 },
   visible: {
     opacity: 1,
     y: 0,
     scale: 1,
-    transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] },
+    rotateX: 0,
+    transition: { duration: 0.65, ease: [0.25, 0.46, 0.45, 0.94] },
   },
 }
 
@@ -121,7 +124,9 @@ function SkillCard({ skill }) {
         }} />
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
-          <span style={{ fontSize: '1.8rem' }}>{skill.icon}</span>
+          <span style={{ fontSize: '1.8rem', lineHeight: 1, display: 'flex', alignItems: 'center' }}>
+            {skill.icon === '__python__' ? <PythonIcon size={32} /> : skill.icon}
+          </span>
           <h3 style={{
             fontSize: '1.1rem',
             fontWeight: 800,
@@ -175,7 +180,28 @@ export default function Skills() {
   const inView = useInView(ref, { once: true, margin: '-80px' })
 
   return (
-    <section id="skills" className="section" style={{ background: 'rgba(248,247,255,0.5)' }}>
+    <section id="skills" className="section" style={{ background: 'rgba(248,247,255,0.5)', position: 'relative', overflow: 'hidden' }}>
+      {/* Dot grid background */}
+      <div style={{
+        position: 'absolute', inset: 0,
+        backgroundImage: 'radial-gradient(circle, rgba(168,85,247,0.18) 1.2px, transparent 1.2px)',
+        backgroundSize: '32px 32px',
+        opacity: 0.45,
+        pointerEvents: 'none',
+      }} />
+      {/* Gradient blobs */}
+      <div style={{
+        position: 'absolute', top: -80, left: -80,
+        width: 380, height: 380, borderRadius: '50%',
+        background: 'radial-gradient(circle, rgba(99,102,241,0.08) 0%, transparent 70%)',
+        pointerEvents: 'none',
+      }} />
+      <div style={{
+        position: 'absolute', bottom: -60, right: -60,
+        width: 320, height: 320, borderRadius: '50%',
+        background: 'radial-gradient(circle, rgba(6,182,212,0.08) 0%, transparent 70%)',
+        pointerEvents: 'none',
+      }} />
       <div className="container" ref={ref}>
         <motion.h2
           className="section-title grad-text"
@@ -201,6 +227,7 @@ export default function Skills() {
           ))}
         </motion.div>
       </div>
+      <SectionArrow to="#gallery" label="Gallery" />
     </section>
   )
 }

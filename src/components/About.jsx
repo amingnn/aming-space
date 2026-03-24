@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
+import SectionArrow from './SectionArrow'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 50, scale: 0.96 },
@@ -29,7 +30,20 @@ export default function About() {
   const [avatarHover, setAvatarHover] = useState(false)
 
   return (
-    <section id="about" className="section">
+    <section id="about" className="section" style={{ position: 'relative', overflow: 'hidden' }}>
+      {/* Background decorations */}
+      <div style={{
+        position: 'absolute', top: -120, right: -180,
+        width: 600, height: 600, borderRadius: '50%',
+        background: 'radial-gradient(circle, rgba(168,85,247,0.07) 0%, transparent 70%)',
+        pointerEvents: 'none',
+      }} />
+      <div style={{
+        position: 'absolute', bottom: -100, left: -120,
+        width: 420, height: 420, borderRadius: '50%',
+        background: 'radial-gradient(circle, rgba(6,182,212,0.06) 0%, transparent 70%)',
+        pointerEvents: 'none',
+      }} />
       <div className="container" ref={ref}>
         <motion.h2
           className="section-title grad-text"
@@ -139,6 +153,7 @@ export default function About() {
           </motion.div>
         </div>
       </div>
+      <SectionArrow to="#skills" label="Skills" />
     </section>
   )
 }
