@@ -1,98 +1,49 @@
 import { useEffect, useRef } from 'react'
 
-const COLORS = ['#a855f7', '#3b82f6', '#06b6d4', '#ec4899', '#8b5cf6', '#f59e0b']
-
 export default function Cursor() {
-  const canvasRef = useRef(null)
-  const particles = useRef([])
-  const mouse = useRef({ x: -200, y: -200 })
+  const dotRef = useRef(null)
+  const ringRef = useRef(null)
+  const pos = useRef({ x: -200, y: -200 })
+  const ring = useRef({ x: -200, y: -200 })
   const rafId = useRef(null)
-  const lastPos = useRef({ x: -200, y: -200 })
 
   useEffect(() => {
-    const canvas = canvasRef.current
-    const ctx = canvas.getContext('2d')
-
-    const resize = () => {
-      canvas.width = window.innerWidth
-      canvas.height = window.innerHeight
-    }
-    resize()
-    window.addEventListener('resize', resize)
+    const dot = dotRef.current
+    const ringEl = ringRef.current
 
     const onMove = (e) => {
-      mouse.current = { x: e.clientX, y: e.clientY }
+      pos.current = { x: e.clientX, y: e.clientY }
 
-      const dx = e.clientX - lastPos.current.x
-      const dy = e.clientY - lastPos.current.y
-      const speed = Math.sqrt(dx * dx + dy * dy)
-      lastPos.current = { x: e.clientX, y: e.clientY }
-
-      // Spawn more particles when moving fast
-      const count = Math.min(Math.floor(speed * 0.4) + 2, 8)
-      for (let i = 0; i < count; i++) {
-        const angle = Math.random() * Math.PI * 2
-        const v = 0.5 + Math.random() * 2.5
-        particles.current.push({
-          x: e.clientX + (Math.random() - 0.5) * 6,
-          y: e.clientY + (Math.random() - 0.5) * 6,
-          vx: Math.cos(angle) * v,
-          vy: Math.sin(angle) * v - 0.5,
-          life: 1,
-          decay: 0.025 + Math.random() * 0.035,
-          size: 1.5 + Math.random() * 3,
-          color: COLORS[Math.floor(Math.random() * COLORS.length)],
-        })
+      // Hover scale effect on interactive elements
+      const target = e.target
+      const isHover = target.closest('a, button, [data-cursor]')
+      if (isHover) {
+        ringEl.style.width = '48px'
+        ringEl.style.height = '48px'
+        ringEl.style.borderColor = 'rgba(168,85,247,0.8)'
+        ringEl.style.background = 'rgba(168,85,247,0.08)'
+      } else {
+        ringEl.style.width = '36px'
+        ringEl.style.height = '36px'
+        ringEl.style.borderColor = 'rgba(168,85,247,0.5)'
+        ringEl.style.background = 'transparent'
       }
     }
     window.addEventListener('mousemove', onMove)
 
     const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
-
-      // Draw glowing cursor dot
-      const { x, y } = mouse.current
-      const grd = ctx.createRadialGradient(x, y, 0, x, y, 10)
-      grd.addColorStop(0, 'rgba(168,85,247,0.9)')
-      grd.addColorStop(0.5, 'rgba(59,130,246,0.5)')
-      grd.addColorStop(1, 'rgba(6,182,212,0)')
-      ctx.beginPath()
-      ctx.arc(x, y, 5, 0, Math.PI * 2)
-      ctx.fillStyle = 'rgba(255,255,255,0.95)'
-      ctx.fill()
-      // Outer glow
-      ctx.beginPath()
-      ctx.arc(x, y, 10, 0, Math.PI * 2)
-      ctx.fillStyle = grd
-      ctx.fill()
-
-      // Update & draw particles
-      particles.current = particles.current.filter(p => p.life > 0)
-      for (const p of particles.current) {
-        p.x += p.vx
-        p.y += p.vy
-        p.vy += 0.06
-        p.vx *= 0.98
-        p.life -= p.decay
-
-        ctx.save()
-        ctx.globalAlpha = p.life * p.life
-        ctx.beginPath()
-        ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2)
-        ctx.fillStyle = p.color
-        ctx.shadowBlur = 6
-        ctx.shadowColor = p.color
-        ctx.fill()
-        ctx.restore()
-      }
-
+      // Dot follows instantly
+      dot.style.transform = `translate(${pos.current.x - 5}px, ${pos.current.y - 5}px)`
+      // Ring follows with lag
+      ring.current.x += (pos.current.x - ring.current.x) * 0.14
+      ring.current.y += (pos.current.y - ring.current.y) * 0.14
+      ringEl.style.transform = `translate(${ring.current.x - 18}px, ${ring.current.y - 18}px)`
       rafId.current = requestAnimationFrame(animate)
     }
     animate()
 
     return () => {
       window.removeEventListener('mousemove', onMove)
-      window.removeEventListener('resize', resize)
       cancelAnimationFrame(rafId.current)
     }
   }, [])
@@ -100,20 +51,43 @@ export default function Cursor() {
   return (
     <>
       <style>{`
-        body { cursor: none; }
-        a, button, [data-cursor] { cursor: none; }
-        @media (pointer: coarse) {
-          body { cursor: auto; }
-          a, button, [data-cursor] { cursor: auto; }
-        }
+        * { cursor: none !important; }
+        @media (pointer: coarse) { * { cursor: auto !important; } }
       `}</style>
-      <canvas
-        ref={canvasRef}
+
+      {/* Dot */}
+      <div
+        ref={dotRef}
         style={{
           position: 'fixed',
-          inset: 0,
+          top: 0,
+          left: 0,
+          width: 10,
+          height: 10,
+          borderRadius: '50%',
+          background: 'linear-gradient(135deg, #a855f7, #06b6d4)',
           pointerEvents: 'none',
           zIndex: 9999,
+          boxShadow: '0 0 8px rgba(168,85,247,0.8)',
+          willChange: 'transform',
+        }}
+      />
+
+      {/* Ring */}
+      <div
+        ref={ringRef}
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: 36,
+          height: 36,
+          borderRadius: '50%',
+          border: '1.5px solid rgba(168,85,247,0.5)',
+          pointerEvents: 'none',
+          zIndex: 9998,
+          transition: 'width 0.2s, height 0.2s, border-color 0.2s, background 0.2s',
+          willChange: 'transform',
         }}
       />
     </>
