@@ -4,8 +4,8 @@ import { motion, useInView } from 'framer-motion'
 const LINKS = [
   {
     name: 'GitHub',
-    handle: '@aming',
-    url: 'https://github.com/aming',
+    handle: '@amingnn',
+    url: 'https://github.com/amingnn',
     icon: (
       <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28">
         <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
@@ -16,8 +16,8 @@ const LINKS = [
   },
   {
     name: '邮箱',
-    handle: 'aming@example.com',
-    url: 'mailto:aming@example.com',
+    handle: 'item_aming@163.com',
+    url: 'mailto:item_aming@163.com',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="28" height="28">
         <rect x="2" y="4" width="20" height="16" rx="3" />
@@ -28,21 +28,8 @@ const LINKS = [
     shadow: 'rgba(168,85,247,0.3)',
   },
   {
-    name: 'LinkedIn',
-    handle: 'Aming',
-    url: 'https://linkedin.com/in/aming',
-    icon: (
-      <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28">
-        <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z" />
-        <circle cx="4" cy="4" r="2" />
-      </svg>
-    ),
-    gradient: 'linear-gradient(135deg, #0077b5, #00a0dc)',
-    shadow: 'rgba(0,119,181,0.3)',
-  },
-  {
     name: '微信',
-    handle: '扫码添加',
+    handle: 'p1279456901',
     url: '#',
     icon: (
       <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28">
@@ -60,11 +47,11 @@ function LinkCard({ link, index }) {
       href={link.url}
       target={link.url.startsWith('http') ? '_blank' : undefined}
       rel="noreferrer"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, y: 50, scale: 0.95 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: true, margin: '-60px' }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      whileHover={{ y: -6, boxShadow: `0 20px 50px ${link.shadow}` }}
+      transition={{ duration: 0.55, delay: index * 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
+      whileHover={{ y: -6, scale: 1.02, boxShadow: `0 20px 50px ${link.shadow}` }}
       data-cursor
       style={{
         display: 'flex',

@@ -180,6 +180,13 @@ body {
   line-height: 0;
 }
 
+/* Xiaomi-style smooth scale on interactive elements */
+a, button {
+  transition: transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              box-shadow 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              opacity 0.25s ease;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .section { padding: 70px 0; }

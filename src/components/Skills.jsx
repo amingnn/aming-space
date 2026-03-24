@@ -4,7 +4,7 @@ import { motion, useInView } from 'framer-motion'
 const SKILLS = [
   {
     category: 'AI · 视觉',
-    icon: '🧠',
+    icon: '👁️',
     gradient: 'linear-gradient(135deg, #a855f7, #6366f1)',
     items: [
       { name: 'PyTorch', desc: '深度学习框架，训练视觉模型' },
@@ -15,25 +15,37 @@ const SKILLS = [
     ],
   },
   {
-    category: '编程语言',
-    icon: '⌨️',
+    category: 'Python 生态',
+    icon: '🐍',
     gradient: 'linear-gradient(135deg, #3b82f6, #06b6d4)',
     items: [
-      { name: 'Python', desc: 'AI/ML 首选语言' },
-      { name: 'JavaScript', desc: '前端开发与交互' },
-      { name: 'C++', desc: '性能关键场景' },
+      { name: '自动化', desc: 'Playwright / Selenium 等' },
+      { name: 'LLM 应用', desc: '大语言模型接入与调用' },
+      { name: '爬虫', desc: 'Scrapy / httpx 数据采集' },
+      { name: 'AI 音频', desc: 'Whisper / TTS 语音处理' },
+      { name: 'FastAPI', desc: 'Python 后端 API 服务' },
+    ],
+  },
+  {
+    category: '其他语言',
+    icon: '⌨️',
+    gradient: 'linear-gradient(135deg, #06b6d4, #10b981)',
+    items: [
+      { name: 'C / C++', desc: '性能关键与底层场景' },
       { name: 'SQL', desc: '数据查询与管理' },
+      { name: 'Go', desc: '高并发服务开发' },
+      { name: 'YAML', desc: '配置文件与工作流编排' },
     ],
   },
   {
     category: '工具 · 平台',
     icon: '🛠️',
-    gradient: 'linear-gradient(135deg, #06b6d4, #10b981)',
+    gradient: 'linear-gradient(135deg, #f59e0b, #ec4899)',
     items: [
       { name: 'Git / GitHub', desc: '版本控制与协作' },
       { name: 'Linux', desc: '服务器环境与调试' },
-      { name: 'Jupyter', desc: '实验与数据探索' },
       { name: 'Docker', desc: '环境隔离与部署' },
+      { name: 'uv', desc: 'Python 包管理器，极速依赖安装' },
     ],
   },
   {
@@ -41,14 +53,32 @@ const SKILLS = [
     icon: '🚀',
     gradient: 'linear-gradient(135deg, #ec4899, #a855f7)',
     items: [
-      { name: 'Diffusion Models', desc: '生成式视觉模型' },
-      { name: 'Multimodal LLM', desc: '图文多模态大模型' },
-      { name: 'CUDA', desc: 'GPU 并行计算' },
+      { name: 'LangChain', desc: 'LLM 应用编排框架' },
+      { name: 'LangGraph', desc: 'Agent 工作流图编排' },
+      { name: '模型优化', desc: '量化 / 剪枝 / 蒸馏' },
+      { name: 'CUDA', desc: 'GPU 并行计算加速' },
     ],
   },
 ]
 
-function SkillCard({ skill, delay }) {
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.1 },
+  },
+}
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 60, scale: 0.94 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] },
+  },
+}
+
+function SkillCard({ skill }) {
   const [tilt, setTilt] = useState({ x: 0, y: 0 })
   const [hovered, setHovered] = useState(null)
   const cardRef = useRef(null)
@@ -64,10 +94,7 @@ function SkillCard({ skill, delay }) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-80px' }}
-      transition={{ duration: 0.6, delay }}
+      variants={cardVariants}
       ref={cardRef}
       onMouseMove={onMouseMove}
       onMouseLeave={() => setTilt({ x: 0, y: 0 })}
@@ -84,20 +111,17 @@ function SkillCard({ skill, delay }) {
           position: 'relative',
           overflow: 'hidden',
           cursor: 'default',
+          height: '100%',
         }}
       >
-        {/* Gradient top bar */}
         <div style={{
           position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
+          top: 0, left: 0, right: 0,
           height: 4,
           background: skill.gradient,
           borderRadius: '20px 20px 0 0',
         }} />
 
-        {/* Glow on hover */}
         <div style={{
           position: 'absolute',
           inset: 0,
@@ -142,7 +166,7 @@ function SkillCard({ skill, delay }) {
               <span style={{
                 fontSize: '0.78rem',
                 color: '#9ca3af',
-                maxWidth: 140,
+                maxWidth: 150,
                 textAlign: 'right',
                 opacity: hovered === item.name ? 1 : 0.6,
                 transition: 'opacity 0.2s',
@@ -159,29 +183,34 @@ function SkillCard({ skill, delay }) {
 
 export default function Skills() {
   const ref = useRef(null)
-  const inView = useInView(ref, { once: true, margin: '-100px' })
+  const inView = useInView(ref, { once: true, margin: '-80px' })
 
   return (
     <section id="skills" className="section" style={{ background: 'rgba(248,247,255,0.5)' }}>
       <div className="container" ref={ref}>
         <motion.h2
           className="section-title grad-text"
-          initial={{ opacity: 0, y: 30 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
+          initial={{ opacity: 0, y: 40, scale: 0.96 }}
+          animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
+          transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
           技能栈
         </motion.h2>
 
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-          gap: 24,
-        }}>
-          {SKILLS.map((skill, i) => (
-            <SkillCard key={skill.category} skill={skill} delay={i * 0.1} />
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate={inView ? 'visible' : 'hidden'}
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+            gap: 24,
+          }}
+        >
+          {SKILLS.map((skill) => (
+            <SkillCard key={skill.category} skill={skill} />
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   )

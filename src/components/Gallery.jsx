@@ -1,14 +1,13 @@
 import { useState, useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 
-// Placeholder gallery items - replace src with actual photo paths in public/gallery/
 const PHOTOS = [
-  { id: 1, src: null, label: '城市夜景', tag: '摄影', color: '#a855f7', span: 2 },
+  { id: 1, src: null, label: '目标检测实验', tag: 'AI', color: '#a855f7', span: 2 },
   { id: 2, src: null, label: '模型训练可视化', tag: 'AI', color: '#3b82f6', span: 1 },
-  { id: 3, src: null, label: '日落', tag: '摄影', color: '#ec4899', span: 1 },
-  { id: 4, src: null, label: '目标检测结果', tag: 'AI', color: '#06b6d4', span: 1 },
-  { id: 5, src: null, label: '街头抓拍', tag: '摄影', color: '#10b981', span: 1 },
-  { id: 6, src: null, label: '语义分割展示', tag: 'AI', color: '#8b5cf6', span: 2 },
+  { id: 3, src: null, label: '羽毛球对决', tag: '运动', color: '#ec4899', span: 1 },
+  { id: 4, src: null, label: '语义分割结果', tag: 'AI', color: '#06b6d4', span: 1 },
+  { id: 5, src: null, label: '乒乓球练习', tag: '运动', color: '#10b981', span: 1 },
+  { id: 6, src: null, label: 'LLM Agent 流程图', tag: 'AI', color: '#8b5cf6', span: 2 },
 ]
 
 function PhotoCard({ photo, index }) {
@@ -25,10 +24,10 @@ function PhotoCard({ photo, index }) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 40, scale: 0.95 }}
+      initial={{ opacity: 0, y: 60, scale: 0.93 }}
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: true, margin: '-60px' }}
-      transition={{ duration: 0.6, delay: index * 0.08 }}
+      transition={{ duration: 0.65, delay: index * 0.08, ease: [0.25, 0.46, 0.45, 0.94] }}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       style={{
@@ -117,7 +116,7 @@ function PhotoCard({ photo, index }) {
           fontSize: '3rem',
           opacity: 0.4,
         }}>
-          {photo.tag === 'AI' ? '🤖' : '📷'}
+          {photo.tag === 'AI' ? '🤖' : '🏸'}
         </div>
       )}
     </motion.div>
@@ -146,7 +145,7 @@ export default function Gallery() {
           transition={{ duration: 0.6, delay: 0.15 }}
           style={{ textAlign: 'center', color: '#6b7280', marginBottom: 50, fontSize: '1.05rem' }}
         >
-          AI 实验结果 · 日常摄影 · 有趣瞬间
+          AI 实验结果 · 运动瞬间 · 有趣记录
         </motion.p>
 
         <div style={{
@@ -159,14 +158,6 @@ export default function Gallery() {
           ))}
         </div>
 
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.6, delay: 0.6 }}
-          style={{ textAlign: 'center', color: '#9ca3af', marginTop: 32, fontSize: '0.9rem' }}
-        >
-          * 将照片放入 <code style={{ background: '#f3f4f6', padding: '2px 6px', borderRadius: 4 }}>public/gallery/</code> 并更新图片路径即可替换
-        </motion.p>
       </div>
     </section>
   )
